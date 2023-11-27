@@ -34,6 +34,7 @@ limitations under the License.
 #include "xla/python/types.h"
 #include "xla/python/xplane_to_profile_instructions.h"
 #include "xla/status.h"
+#include "tsl/profiler/lib/nvtx_utils.h"
 #include "tsl/profiler/lib/profiler_factory.h"
 #include "tsl/profiler/lib/profiler_interface.h"
 #include "tsl/profiler/lib/profiler_session.h"
@@ -199,6 +200,17 @@ void BuildProfilerSubmodule(py::module* m) {
             {xspace_proto}, &fdo_profile));
         return fdo_profile.SerializeAsString();
       });
+
+  profiler.def(
+      "nvtx_implementation_is_present",
+      []() -> py::bool_ {
+        return tsl::profiler::nvtx::GetNVTXDomain().has_value();
+      },
+      "Query whether NVTX functions are being redirected to a developer tool. "
+      "For example inside `python script.py` this will return False, while "
+      "inside `nsys profile python script.py` it will return True. Note that "
+      "this does not indicate whether or not the developer tool is actually "
+      "recording events.");
 }
 
 }  // namespace xla
