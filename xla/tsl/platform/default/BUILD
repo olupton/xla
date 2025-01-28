@@ -343,7 +343,7 @@ cc_library(
         "@tsl//tsl/platform:snappy.h",
     ],
     copts = tsl_copts(),
-    defines = ["TENSORFLOW_USE_NUMA", "TF_USE_SNAPPY"],
+    defines = ["TF_USE_SNAPPY"],
     tags = [
         "manual",
         "no_oss",
